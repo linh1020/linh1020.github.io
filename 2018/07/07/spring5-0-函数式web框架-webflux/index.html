@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="spring5.0 函数式web框架 webflux 2个demo的源码在GitHub上 链接点这里  [TOC] 函数式web框架 webFlux什么是函数式 函数式编程是种编程方式，它将电脑运算视为函数的计算。函数编程语言最重要的基础是λ演算（lambda calculus），而且λ演算的函数可以接受函数当作输入（参数）和输出（返回值）。  特性  惰性计算 函数是“第一等公民” 只使用表达式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring5.0 函数式web框架 webflux">
+<meta property="og:url" content="http://yoursite.com/2018/07/07/spring5-0-函数式web框架-webflux/index.html">
+<meta property="og:site_name" content="hxc&#39;s blog">
+<meta property="og:description" content="spring5.0 函数式web框架 webflux 2个demo的源码在GitHub上 链接点这里  [TOC] 函数式web框架 webFlux什么是函数式 函数式编程是种编程方式，它将电脑运算视为函数的计算。函数编程语言最重要的基础是λ演算（lambda calculus），而且λ演算的函数可以接受函数当作输入（参数）和输出（返回值）。  特性  惰性计算 函数是“第一等公民” 只使用表达式">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://docs.spring.io/spring/docs/5.0.0.BUILD-SNAPSHOT/spring-framework-reference/htmlsingle/images/webflux-overview.png">
+<meta property="og:updated_time" content="2018-07-07T05:08:43.808Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="spring5.0 函数式web框架 webflux">
+<meta name="twitter:description" content="spring5.0 函数式web框架 webflux 2个demo的源码在GitHub上 链接点这里  [TOC] 函数式web框架 webFlux什么是函数式 函数式编程是种编程方式，它将电脑运算视为函数的计算。函数编程语言最重要的基础是λ演算（lambda calculus），而且λ演算的函数可以接受函数当作输入（参数）和输出（返回值）。  特性  惰性计算 函数是“第一等公民” 只使用表达式">
+<meta name="twitter:image" content="https://docs.spring.io/spring/docs/5.0.0.BUILD-SNAPSHOT/spring-framework-reference/htmlsingle/images/webflux-overview.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/07/07/spring5-0-函数式web框架-webflux/"/>
+
+
+
+
+
+  <title>spring5.0 函数式web框架 webflux | hxc's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">hxc's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/07/spring5-0-函数式web框架-webflux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hxc">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hxc's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">spring5.0 函数式web框架 webflux</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-07T12:53:33+08:00">
+                2018-07-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/spring/" itemprop="url" rel="index">
+                    <span itemprop="name">spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/07/spring5-0-函数式web框架-webflux/" class="leancloud_visitors" data-flag-title="spring5.0 函数式web框架 webflux">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="spring5-0-函数式web框架-webflux"><a href="#spring5-0-函数式web框架-webflux" class="headerlink" title="spring5.0 函数式web框架 webflux"></a>spring5.0 函数式web框架 webflux</h1><hr>
+<p><strong>2个demo的源码在GitHub上</strong> <a href="https://github.com/linh1020/webflux-example" target="_blank" rel="noopener"><strong>链接点这里</strong></a></p>
+<hr>
+<p>[TOC]</p>
+<h2 id="函数式web框架-webFlux"><a href="#函数式web框架-webFlux" class="headerlink" title="函数式web框架 webFlux"></a>函数式web框架 webFlux</h2><h4 id="什么是函数式"><a href="#什么是函数式" class="headerlink" title="什么是函数式"></a>什么是函数式</h4><blockquote>
+<p>函数式编程是种编程方式，它将电脑运算视为函数的计算。函数编程语言最重要的基础是λ演算（lambda calculus），而且λ演算的函数可以接受函数当作输入（参数）和输出（返回值）。</p>
+</blockquote>
+<p><strong>特性</strong></p>
+<ul>
+<li>惰性计算</li>
+<li>函数是“第一等公民”</li>
+<li>只使用表达式而不使用语句</li>
+<li>没有副作用</li>
+</ul>
+<h4 id="什么是响应式"><a href="#什么是响应式" class="headerlink" title="什么是响应式"></a>什么是响应式</h4><blockquote>
+<p>Spring官方文档： In plain terms reactive programming is about non-blocking applications that are asynchronous and event-driven and require a small number of threads to scale vertically (i.e. within the JVM) rather than horizontally (i.e. through clustering).</p>
+</blockquote>
+<p>简单来说响应式编程是关于异步的事件驱动的需要少量线程的垂直扩展而非水平扩展的无阻塞应用</p>
+<blockquote>
+<p>A key aspect of reactive applications is the concept of <strong>backpressure</strong> which is a mechanism to ensure producers don’t overwhelm consumers. For example in a pipeline of reactive components extending from the database to the HTTP response when the HTTP connection is too slow the data repository can also slow down or stop completely until network capacity frees up.</p>
+</blockquote>
+<blockquote>
+<p>Reactive programming also leads to a major shift from imperative to declarative async composition of logic. It is comparable to writing blocking code vs using the CompletableFuture from Java 8 to compose follow-up actions via lambda expressions.</p>
+</blockquote>
+<blockquote>
+<p>For a longer introduction check the blog series “Notes on Reactive Programming” by Dave Syer.</p>
+</blockquote>
+<blockquote>
+<p>百度百科： 响应式编程是一种面向数据流和变化传播的编程范式。这意味着可以在编程语言中很方便地表达静态或动态的数据流，而相关的计算模型会自动将变化的值通过数据流进行传播。</p>
+</blockquote>
+<p>4个关键词：</p>
+<ul>
+<li>Responsive: 可响应的。要求系统尽可能做到在任何时候都能及时响应。</li>
+<li>Resilient: 可恢复的。要求系统即使出错了，也能保持可响应性。</li>
+<li>Elastic: 可伸缩的。要求系统在各种负载下都能保持可响应性。</li>
+<li>Message Driven:消息驱动的。要求系统通过异步消息连接各个组件。</li>
+</ul>
+<p>Excel表格就是一个响应式的(<em>演示示例</em>)</p>
+<p>backpressure： <a href="http://blog.csdn.net/jdsjlzx/article/details/52717636" target="_blank" rel="noopener">backpressure(背压)概念的理解</a></p>
+<h4 id="什么是webFlux"><a href="#什么是webFlux" class="headerlink" title="什么是webFlux"></a>什么是webFlux</h4><p><img src="https://docs.spring.io/spring/docs/5.0.0.BUILD-SNAPSHOT/spring-framework-reference/htmlsingle/images/webflux-overview.png" alt="image"><br>左侧是传统的基于Servlet的Spring Web MVC框架，右侧是5.0版本新引入的基于Reactive Streams的Spring WebFlux框架，从上到下依次是<strong>Router Functions</strong>，<strong>WebFlux</strong>，<strong>Reactive Streams</strong>三个新组件。</p>
+<ul>
+<li>Router Functions: 对标@Controller，@RequestMapping等标准的Spring MVC注解，提供一套函数式风格的API，用于创建Router，Handler和Filter。</li>
+<li>WebFlux: 核心组件，协调上下游各个组件提供响应式编程支持。</li>
+<li>Reactive Streams: 一种支持背压（Backpressure）的异步数据流处理标准，主流实现有RxJava和Reactor，Spring WebFlux默认集成的是<strong>Reactor</strong>。</li>
+</ul>
+<p>在Web容器的选择上，Spring WebFlux既支持像Tomcat，Jetty这样的的传统容器（前提是支持Servlet 3.1 Non-Blocking IO API），又支持像Netty，Undertow那样的异步容器。不管是何种容器，Spring WebFlux都会将其输入输出流适配成<code>Flux&lt;DataBuffer&gt;</code>格式，以便进行统一处理。</p>
+<p>值得一提的是，除了新的Router Functions接口，Spring WebFlux同时支持使用老的Spring MVC注解声明Reactive Controller。和传统的MVC Controller不同，Reactive Controller操作的是非阻塞的<code>ServerHttpRequest</code>和<code>ServerHttpResponse</code>，而不再是Spring MVC里的<code>HttpServletRequest</code>和<code>HttpServletResponse</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/reactive/restaurants"</span>)</span><br><span class="line">   <span class="function"><span class="keyword">public</span> Flux&lt;Restaurant&gt; <span class="title">findAll</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> restaurantRepository.findAll();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到主要变化就是在 返回的类型上<code>Flux&lt;Restaurant&gt;</code></p>
+<p> Flux和Mono 是 <strong>Reactor</strong> 中的流数据类型，其中Flux会发送多次，Mono会发送0次或一次</p>
+<blockquote>
+<p>使用webflux需要具备的基础是Reactive programming 的理解。<br>Reactor 的基础 和 熟练的java8 lambda使用</p>
+</blockquote>
+<h4 id="webFlux-简单实例"><a href="#webFlux-简单实例" class="headerlink" title="webFlux 简单实例"></a>webFlux 简单实例</h4><p><strong>Server类</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Server</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String HOST = <span class="string">"localhost"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> PORT = <span class="number">8080</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Routes routes = <span class="keyword">new</span> Routes(); <span class="comment">// ③</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Server server = <span class="keyword">new</span> Server();</span><br><span class="line">        server.startReactorServer(); <span class="comment">// ①</span></span><br><span class="line"><span class="comment">//		server.startTomcatServer(); // ②</span></span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"Press ENTER to exit."</span>);</span><br><span class="line">        System.in.read();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>①：Netty</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startReactorServer</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    RouterFunction&lt;ServerResponse&gt; route = routes.rout(); <span class="comment">// ④</span></span><br><span class="line">    HttpHandler httpHandler = toHttpHandler(route);</span><br><span class="line"></span><br><span class="line">    ReactorHttpHandlerAdapter adapter = <span class="keyword">new</span> ReactorHttpHandlerAdapter(httpHandler);</span><br><span class="line">    HttpServer server = HttpServer.create(HOST, PORT);</span><br><span class="line">    server.newHandler(adapter).block();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>②：Tomcat</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startTomcatServer</span><span class="params">()</span> <span class="keyword">throws</span> LifecycleException </span>&#123;</span><br><span class="line">        RouterFunction&lt;?&gt; route = routes.rout();</span><br><span class="line">        HttpHandler httpHandler = toHttpHandler(route);</span><br><span class="line"></span><br><span class="line">        Tomcat tomcatServer = <span class="keyword">new</span> Tomcat();</span><br><span class="line">        tomcatServer.setHostname(HOST);</span><br><span class="line">        tomcatServer.setPort(PORT);</span><br><span class="line">        Context rootContext = tomcatServer.addContext(<span class="string">""</span>, System.getProperty(<span class="string">"java.io.tmpdir"</span>));</span><br><span class="line">        ServletHttpHandlerAdapter servlet = <span class="keyword">new</span> ServletHttpHandlerAdapter(httpHandler);</span><br><span class="line">        Tomcat.addServlet(rootContext, <span class="string">"httpHandlerServlet"</span>, servlet);</span><br><span class="line">        rootContext.addServletMapping(<span class="string">"/"</span>, <span class="string">"httpHandlerServlet"</span>);</span><br><span class="line">        tomcatServer.start();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>③：Route</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Routes</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> RouterFunction&lt;ServerResponse&gt; <span class="title">rout</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        CustomerRepository repository = <span class="keyword">new</span> CustomerRepositoryImpl();</span><br><span class="line">        CustomerHandler handler = <span class="keyword">new</span> CustomerHandler(repository);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> nest(</span><br><span class="line">                path(<span class="string">"/person"</span>),</span><br><span class="line">                nest(accept(APPLICATION_JSON),</span><br><span class="line">                        route(GET(<span class="string">"/&#123;id&#125;"</span>), handler::getPerson)</span><br><span class="line">                                .andRoute(method(HttpMethod.GET), handler::listPeople)</span><br><span class="line">                ).andRoute(POST(<span class="string">"/"</span>).and(contentType(APPLICATION_JSON)), handler::createPerson)</span><br><span class="line">        ).andNest(</span><br><span class="line">                path(<span class="string">"/product"</span>),</span><br><span class="line">                route(path(<span class="string">"/"</span>), serverRequest -&gt;</span><br><span class="line">                        ServerResponse.ok().contentType(APPLICATION_JSON)</span><br><span class="line">                                .body(fromPublisher(Flux.just(<span class="keyword">new</span> Product(<span class="number">1</span>, <span class="string">"PC"</span>, <span class="number">1000.00</span>)), Product.class))</span><br><span class="line">                )</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>route中设置uri地址对应的资源，可以创建多个route</p>
+<p><strong>Route创建的方法</strong>：</p>
+<ul>
+<li>返回类型为：<code>RouterFunction&lt;ServerResponse&gt;</code></li>
+<li><p>通过<code>RouterFunctions</code>来创建Route</p>
+<ol>
+<li><p><code>RouterFunctions.route(RequestPredicate predicate, HandlerFunction&lt;T&gt; handlerFunction)</code><br> 其中 RequestPredicate 是一个函数式接口，接受一个’T’类型返回一个布尔类型。<br> 大多数情况，我们都可以通过RequestPredicates类的静态方法来创建这个对象，比如：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public static RequestPredicate GET(String pattern) &#123;</span><br><span class="line">        return method(HttpMethod.GET).and(path(pattern));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p> <code>HandlerFunction&lt;T&gt;</code> 也是一个函数式接口，接受一个<code>ServerResponse</code>的子类返回Mono<t>,可以把这个对象当作实际处理逻辑的部分。</t></p>
+</li>
+<li><p><code>public static &lt;T extends ServerResponse&gt; RouterFunction&lt;T&gt; nest(RequestPredicate predicate, RouterFunction&lt;T&gt; routerFunction)</code></p>
+<p> nest 方法同样有一个 RequestPredicate 但是第二个参数变成了 <code>RouterFunction&lt;T&gt; routerFunction</code>，这个方法的作用是为了分支uri。</p>
+<p> 在RESTFUL风格的接口中，会有目录层级的概念，这里的nest方法就可以理解为层级的关系，比如上述的”/person”后面的”/{id}” 就是相当于 “/person/{id}”</p>
+</li>
+</ol>
+</li>
+<li><code>public static RequestPredicate accept(MediaType... mediaTypes)</code> accept可以用来设定接收或者返回的请求类型<br> 这里的MediaType 和 Jersey里我们用的大致相同</li>
+<li>连接方法：and(RouterFunction<t>),andOther(RouterFunction<t>),nest(),andNest(),andRoute()等，可以进行组合</t></t></li>
+<li><p>Filter</p>
+<p> 通过RouterFunction的 filter方法可以添加过滤器，<code>next.handle(request);</code>的前后可以添加一些需要做的事</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.filter((request, next) -&gt; &#123;</span><br><span class="line">    System.out.println(&quot;Before handler invocation: &quot; + request.path());</span><br><span class="line">    Response&lt;?&gt; response = next.handle(request);</span><br><span class="line">    Object body = response.body();</span><br><span class="line">    System.out.println(&quot;After handler invocation: &quot; + body);</span><br><span class="line">    return response;</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>Handler</strong>：</p>
+<ul>
+<li>handler差不多可以理解为SpringMvc 中的service+controller，当然也可以在拆分出service，handler只作为controller</li>
+<li>uri中的参数可以通过 <code>int personId = Integer.valueOf(request.pathVariable(&quot;id&quot;));</code> 来获取</li>
+<li><p>返回的类型 Mono<serverresponse></serverresponse></p>
+<p>  可以通过Spring 提供的 ServerResponse 来创建</p>
+<ol>
+<li><p>状态码方法，可以使用现成的，比如成功的状态码：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">static ServerResponse.BodyBuilder ok() &#123;</span><br><span class="line">        return status(HttpStatus.OK);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p> 也可以自己定义：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">static ServerResponse.BodyBuilder ok() &#123;</span><br><span class="line">        return status(HttpStatus.OK);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>contentType(MediaType var1) 返回的内容类型 同样是 MediaType类型</p>
+</li>
+<li><p>最后就是返回的内容：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;T, P extends Publisher&lt;T&gt;&gt; Mono&lt;ServerResponse&gt; body(P var1, Class&lt;T&gt; var2);</span><br><span class="line"></span><br><span class="line">&lt;T, P extends Publisher&lt;T&gt;&gt; Mono&lt;ServerResponse&gt; body(P var1, ParameterizedTypeReference&lt;T&gt; var2);</span><br><span class="line"></span><br><span class="line">Mono&lt;ServerResponse&gt; syncBody(Object var1);</span><br><span class="line"></span><br><span class="line">Mono&lt;ServerResponse&gt; body(BodyInserter&lt;?, ? super ServerHttpResponse&gt; var1);</span><br><span class="line"></span><br><span class="line">Mono&lt;ServerResponse&gt; render(String var1, Object... var2);</span><br><span class="line"></span><br><span class="line">Mono&lt;ServerResponse&gt; render(String var1, Map&lt;String, ?&gt; var2);</span><br></pre></td></tr></table></figure>
+<p> 一般常用的通过 body方法来放入返回的内容</p>
+<ol>
+<li><p><code>&lt;T, P extends Publisher&lt;T&gt;&gt; Mono&lt;ServerResponse&gt; body(P var1, Class&lt;T&gt; var2);</code></p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Flux&lt;Customer&gt; people = this.repository.all();</span><br><span class="line">		return ServerResponse.ok().contentType(APPLICATION_JSON).body(people, Customer.class);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用BodyInserters的构建方法 fromObject(); fromPublisher();等</p>
+</li>
+<li><p>使用 build 方法</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Mono&lt;ServerResponse&gt; build(Publisher&lt;Void&gt; var1);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p>控制页面跳转 permanentRedirect() 或 temporaryRedirect() 这2个方法与ok()都返回的是 BodyBuilder，返回页面的内容可以通过body方法来输出</p>
+</li>
+</ol>
+</li>
+</ul>
+<p>[演示]</p>
+<h4 id="更简单的使用webFlux-（springboot）"><a href="#更简单的使用webFlux-（springboot）" class="headerlink" title="更简单的使用webFlux （springboot）"></a>更简单的使用webFlux （springboot）</h4><p>通过springboot来使用webFlux 会更简单：</p>
+<p>[springboot的版本必须是2.0以上]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;parent&gt;</span><br><span class="line">		&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">		&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;</span><br><span class="line">		&lt;version&gt;2.0.0.M4&lt;/version&gt;</span><br><span class="line">		&lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;</span><br><span class="line">	&lt;/parent&gt;</span><br></pre></td></tr></table></figure>
+<p>webFlux 的依赖包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">   &lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;spring-boot-starter-webflux&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
+<p>入口类和普通的springboot项目一样<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@SpringBootApplication</span><br><span class="line">public class WebfluxApplication &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        SpringApplication.run(WebfluxApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>创建Route：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">public class WebRoutes &#123;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public RouterFunction&lt;ServerResponse&gt; route() &#123;</span><br><span class="line">        return RouterFunctions.route(</span><br><span class="line">                GET(&quot;/&quot;), request -&gt; &#123;</span><br><span class="line">                    Mono&lt;User&gt; user = Mono.just(new User(&quot;1&quot;, &quot;a&quot;));</span><br><span class="line">                    return ok().body(fromPublisher(user, User.class));</span><br><span class="line">                &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时我们的项目已经可以运行了,启动时可以看到 已经创建了地址映射 ‘/’</p>
+<blockquote>
+<p>Mapped (GET &amp;&amp; /) -&gt; com.lin.webflux.web.WebRoutes$$Lambda$190/874765360@44a44d5d</p>
+</blockquote>
+<p>创建多个Route 只需要上述的相同操作，比如每个模块一个route bean</p>
+<p>[例子]</p>
+<p>==<strong>RESTFUL API 和 eventStram 和 websocket编程</strong>==</p>
+<h2 id="spring5-0-的其他新特性介绍"><a href="#spring5-0-的其他新特性介绍" class="headerlink" title="spring5.0 的其他新特性介绍"></a>spring5.0 的其他新特性介绍</h2><h4 id="JDK-8-和Java-EE7-以上版本"><a href="#JDK-8-和Java-EE7-以上版本" class="headerlink" title="JDK 8+和Java EE7+以上版本"></a>JDK 8+和Java EE7+以上版本</h4><ul>
+<li>整个框架的代码基于java8</li>
+<li>通过使用泛型等特性提高可读性</li>
+<li>对java8提高直接的代码支撑</li>
+<li>运行时兼容JDK9</li>
+<li>Java EE 7API需要Spring相关的模块支持</li>
+<li>运行时兼容Java EE8 API</li>
+<li>取消部分的包,类和方法</li>
+<li>包 beans.factory.access</li>
+<li>包 dbc.support.nativejdbc</li>
+<li>从spring-aspects 模块移除了包mock.staicmock,不在提AnnotationDrivenStaticEntityMockingControl支持</li>
+<li>许多不建议使用的类和方法在代码库中删除</li>
+</ul>
+<h4 id="核心特性"><a href="#核心特性" class="headerlink" title="核心特性"></a>核心特性</h4><ul>
+<li>支持候选组件索引(也可以支持环境变量扫描)</li>
+<li>支持@Nullable注解</li>
+<li>函数式风格GenericApplicationContext/AnnotationConfigApplicationContext</li>
+<li>基本支持bean API注册</li>
+<li>在接口层面使用CGLIB动态代理的时候，提供事物，缓存，异步注解检测</li>
+<li>XML配置作用域流式</li>
+<li>Spring WebMVC</li>
+<li>全部的Servlet 3.1 签名支持在Spring-provied Filter实现</li>
+<li>在Spring MVC Controller方法里支持Servlet4.0 PushBuilder参数</li>
+<li>多个不可变对象的数据绑定(Kotlin/Lombok/@ConstructorPorties)</li>
+<li>支持jackson2.9</li>
+<li>支持JSON绑定API</li>
+<li>支持protobuf3</li>
+<li>支持Reactor3.1 Flux和Mono</li>
+</ul>
+<h4 id="测试方面的改进"><a href="#测试方面的改进" class="headerlink" title="测试方面的改进"></a>测试方面的改进</h4><ul>
+<li>完成了对JUnit 5’s Juptier编程和拓展模块在Spring TestContext框架</li>
+<li>SpringExtension:是JUnit多个可拓展API的一个实现，提供了对现存Spring TestContext Framework的支持，使用@ExtendWith(SpringExtension.class)注解引用。</li>
+<li>@SpringJunitConfig:一个复合注解</li>
+<li>@ExtendWith(SpringExtension.class) 来源于Junit Jupit</li>
+<li>@ContextConfiguration 来源于Srping TestContext框架</li>
+<li>@DisabledIf 如果提供的该属性值为true的表达或占位符，信号：注解的测试类或测试方法被禁用</li>
+<li>在Spring TestContext框架中支持并行测试</li>
+<li>通过SpringRunner在Sring TestContext框架中支持TestNG, Junit5,新的执行之前和之后测试回调。在testexecutionlistener API和testcontextmanager新beforetestexecution()和aftertestexecution()回调。</li>
+<li>在testexecutionlistener API和testcontextmanager新beforetestexecution()和aftertestexecution()回调。MockHttpServletRequest新增了getContentAsByteArray()和getContentAsString()方法来访问请求体</li>
+<li>如果字符编码被设置为mock请求，在print()和log()方法中可以打印Spring MVC Test的redirectedUrl()和forwardedUrl()方法支持带变量表达式URL模板。</li>
+<li>XMLUnit 升级到了2.3版本。</li>
+</ul>
+<h4 id="spring对kotlin的支持"><a href="#spring对kotlin的支持" class="headerlink" title="spring对kotlin的支持"></a>spring对kotlin的支持</h4><p>spring在5.0版本提供了对kotlin的支持，</p>
+<ul>
+<li>空安全api</li>
+<li>支持kotlin不可变类通过optional参数和默认值</li>
+<li>函数式bean定义 DSL</li>
+<li>函数式routing定义 DSL</li>
+<li>利用Kotlin具体的类型参数指定显式类避免使用序列化/反序列化的各种API比如RestTemplate或WebFlux的API。</li>
+<li>kotlin 空安全支持 @Autowired或@Inject 和 @RequestParam、@RequestHeader等</li>
+<li>kotlin脚本同时支持 springMVC 和 Spring WebFlux</li>
+<li>支持kotlin构造器自动注入</li>
+<li>kotlin反射用来定义接口方法参数</li>
+</ul>
+<p>主要介绍2点</p>
+<ol>
+<li><p>Bean 和 route 的 DSL</p>
+<p> spring注入bean的方式我们知道的有2中，xml配置文件和注解。如果使用kotlin的话使用dsl的方式会更方便。</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">fun beans() = beans &#123;</span><br><span class="line">	bean&lt;UserHandler&gt;()</span><br><span class="line">	bean &#123;</span><br><span class="line">		Routes(ref(), ref())</span><br><span class="line">	&#125;</span><br><span class="line">	bean(&quot;webHandler&quot;) &#123;</span><br><span class="line">		RouterFunctions.toWebHandler(ref&lt;Routes&gt;().router(), HandlerStrategies.builder().viewResolver(ref()).build())</span><br><span class="line">	&#125;</span><br><span class="line">	bean(&quot;messageSource&quot;) &#123;</span><br><span class="line">		ReloadableResourceBundleMessageSource().apply &#123;</span><br><span class="line">			setBasename(&quot;messages&quot;)</span><br><span class="line">			setDefaultEncoding(&quot;UTF-8&quot;)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	bean &#123;</span><br><span class="line">		val prefix = &quot;classpath:/templates/&quot;</span><br><span class="line">		val suffix = &quot;.mustache&quot;</span><br><span class="line">		val loader = MustacheResourceTemplateLoader(prefix, suffix)</span><br><span class="line">		MustacheViewResolver(Mustache.compiler().withLoader(loader)).apply &#123;</span><br><span class="line">			setPrefix(prefix)</span><br><span class="line">			setSuffix(suffix)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	profile(&quot;foo&quot;) &#123;</span><br><span class="line">		bean&lt;Foo&gt;()</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Foo</span><br></pre></td></tr></table></figure>
+<p> bean<userhandler>() 等价于 在UserHandler的类上面加上 @Component 或者在xml 里配置一个bean<br> bean() 可以接受配置参数：</userhandler></p>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">name: String? = null,</span><br><span class="line">scope: Scope? = null,</span><br><span class="line">isLazyInit: Boolean? = null,</span><br><span class="line">isPrimary: Boolean? = null,</span><br><span class="line">autowireMode: Autowire = Autowire.NO,</span><br><span class="line">isAutowireCandidate: Boolean? = null,</span><br><span class="line">crossinline function: BeanDefinitionContext.() -&gt; T</span><br></pre></td></tr></table></figure>
+</code></pre><p> bean {</p>
+<pre><code>Routes(ref(), ref())
+</code></pre><p> }<br> ref() 是让spring自动初始化Routes构造器注入的bean</p>
+</li>
+<li><p>Router 的 DSL</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">fun router() = router &#123;</span><br><span class="line">		accept(TEXT_HTML).nest &#123;</span><br><span class="line">			GET(&quot;/&quot;) &#123; ok().render(&quot;index&quot;) &#125;</span><br><span class="line">			GET(&quot;/sse&quot;) &#123; ok().render(&quot;sse&quot;) &#125;</span><br><span class="line">			GET(&quot;/users&quot;, userHandler::findAllView)</span><br><span class="line">		&#125;</span><br><span class="line">		&quot;/api&quot;.nest &#123;</span><br><span class="line">			accept(APPLICATION_JSON).nest &#123;</span><br><span class="line">				GET(&quot;/users&quot;, userHandler::findAll)</span><br><span class="line">			&#125;</span><br><span class="line">			accept(TEXT_EVENT_STREAM).nest &#123;</span><br><span class="line">				GET(&quot;/users&quot;, userHandler::stream)</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">		&#125;</span><br><span class="line">		resources(&quot;/**&quot;, ClassPathResource(&quot;static/&quot;))</span><br><span class="line">	&#125;.filter &#123; request, next -&gt;</span><br><span class="line">		next.handle(request).flatMap &#123;</span><br><span class="line">			if (it is RenderingResponse) RenderingResponse.from(it).modelAttributes(attributes(request.locale(), messageSource)).build() else it.toMono()</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p> 可以更方便的创建route</p>
+</li>
+</ol>
+<h4 id="spring-Data"><a href="#spring-Data" class="headerlink" title="spring Data"></a>spring Data</h4><ul>
+<li>部分jpa 支持直接返回 Flux<t> 的数据类型</t></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/07/学习计划/" rel="next" title="学习计划">
+                <i class="fa fa-chevron-left"></i> 学习计划
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="hxc" />
+            
+              <p class="site-author-name" itemprop="name">hxc</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#spring5-0-函数式web框架-webflux"><span class="nav-number">1.</span> <span class="nav-text">spring5.0 函数式web框架 webflux</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#函数式web框架-webFlux"><span class="nav-number">1.1.</span> <span class="nav-text">函数式web框架 webFlux</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是函数式"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">什么是函数式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是响应式"><span class="nav-number">1.1.0.2.</span> <span class="nav-text">什么是响应式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是webFlux"><span class="nav-number">1.1.0.3.</span> <span class="nav-text">什么是webFlux</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#webFlux-简单实例"><span class="nav-number">1.1.0.4.</span> <span class="nav-text">webFlux 简单实例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更简单的使用webFlux-（springboot）"><span class="nav-number">1.1.0.5.</span> <span class="nav-text">更简单的使用webFlux （springboot）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#spring5-0-的其他新特性介绍"><span class="nav-number">1.2.</span> <span class="nav-text">spring5.0 的其他新特性介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JDK-8-和Java-EE7-以上版本"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">JDK 8+和Java EE7+以上版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#核心特性"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">核心特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试方面的改进"><span class="nav-number">1.2.0.3.</span> <span class="nav-text">测试方面的改进</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#spring对kotlin的支持"><span class="nav-number">1.2.0.4.</span> <span class="nav-text">spring对kotlin的支持</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#spring-Data"><span class="nav-number">1.2.0.5.</span> <span class="nav-text">spring Data</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hxc</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("bxQXrGQ1advYqsOuErV0cQoA-gzGzoHsz-gzGzoHsz", "C4UTLpb63jBdYiowjz9MAJ3t");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
